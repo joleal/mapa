@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Info Windows</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+      #map {
+        height: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <!-- jsFiddle will insert css and js -->
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly&channel=2"
+    ></script>
+    <script>
+      function initMap() {
+
+        fetch('https://opensheet.vercel.app/1WzCwxbnGmlUT0k6FoKTFoyXZ4eiMweG1R7rgsO6OrOk/prep')
+        .then(res => res.json())
+        .then(data => {
+
+          const portugal = { lat: 39.3527912, lng: -6.5403091};
+          const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 6,
+            center: portugal,
+          });
+
+
+          data.forEach(row => {
+            let contentString = `<div>
+            <p>Nome: ${row["Nome do sitio"]}</p>
+            <p>Morada: ${row["Morada"]}</p>
+            <p>Horário: ${row["horario"]}</p>
+            </div>`;
+            let position = {lat: 0, lng: 0};
+
+            [position.lat, position.lng] = row["Link google ou coordenadas"].split(',').map(s => parseFloat(s));
+
+            let infowindow = new google.maps.InfoWindow({
+              content: contentString,
+            });
+
+            let marker = new google.maps.Marker({
+              position: position,
+              map,
+              title: row["zeeee"]
+            });
+
+            marker.addListener("click", () => {
+              infowindow.open({
+                anchor: marker,
+                map,
+                shouldFocus: true,
+              });
+            });
+          });
+        })
+      }
+      
+      document.addEventListener("DOMContentLoaded", function(event) { 
+        initMap();
+      });
+    </script>
+  </body>
+</html>
