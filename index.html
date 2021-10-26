@@ -23,6 +23,8 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script>
+      let map;
+      let infoWindow;
       function initMap() {
 
         fetch('https://opensheet.vercel.app/1WzCwxbnGmlUT0k6FoKTFoyXZ4eiMweG1R7rgsO6OrOk/prep')
@@ -30,11 +32,19 @@
         .then(data => {
 
           const portugal = { lat: 39.3527912, lng: -6.5403091};
-          const map = new google.maps.Map(document.getElementById("map"), {
+          map = new google.maps.Map(document.getElementById("map"), {
             zoom: 6,
             center: portugal,
           });
-
+          
+          map.addListener('click', () => {
+              if (infoWindow) {
+                  infoWindow.close();
+              }
+          });
+          
+          infoWindow = new google.maps.InfoWindow();
+          
           const icons = {
             publico: {
       	      icon: "https://img.icons8.com/ios-filled/50/000000/library.png"
@@ -60,10 +70,6 @@
             
             tipoicon = row["tipo"]
 
-            let infowindow = new google.maps.InfoWindow({
-              content: contentString,
-            });
-
             let marker = new google.maps.Marker({
               position: position,
               icon: icons[tipoicon].icon,
@@ -76,6 +82,7 @@
                 anchor: marker,
                 map,
                 shouldFocus: true,
+                content: contentString,
               });
             });
           });
