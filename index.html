@@ -78,12 +78,8 @@
             });
 
             marker.addListener("click", () => {
-              infowindow.open({
-                anchor: marker,
-                map,
-                shouldFocus: true,
-                content: contentString,
-              });
+              infoWindow.setContent(contentString);
+              infoWindow.open(map, marker);
             });
           });
         })
