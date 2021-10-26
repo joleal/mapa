@@ -23,10 +23,10 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script>
-      let map;
-      let infoWindow;
+      
       function initMap() {
-
+        let map;
+        let infoWindow;
         fetch('https://opensheet.vercel.app/1WzCwxbnGmlUT0k6FoKTFoyXZ4eiMweG1R7rgsO6OrOk/prep')
         .then(res => res.json())
         .then(data => {
