@@ -22,11 +22,14 @@
     <div id="map"></div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
     <script>
       
       function initMap() {
         let map;
         let infoWindow;
+        let markers = [];
         fetch('https://opensheet.vercel.app/1WzCwxbnGmlUT0k6FoKTFoyXZ4eiMweG1R7rgsO6OrOk/prep')
         .then(res => res.json())
         .then(data => {
@@ -86,7 +89,11 @@
               infoWindow.setContent(contentString);
               infoWindow.open(map, marker);
             });
+            
+            markers.push(marker);
           });
+          
+          const markerCluster = new markerClusterer.MarkerClusterer({ map, markers });
         })
       }
     </script>
