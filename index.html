@@ -35,16 +35,27 @@
             center: portugal,
           });
 
+          const icons = {
+            publico: {
+      	      icon: "https://img.icons8.com/ios-filled/30/000000/library.png"
+    	      },
+            jogos: {
+      	      icon: "https://img.icons8.com/ios-glyphs/30/000000/dice.png",
+    	      },
+    	      comida: {
+      	      icon: "https://img.icons8.com/ios-filled/30/000000/restaurant--v1.png",
+    	      },
+  	      };
 
           data.forEach(row => {
             let contentString = `<div>
-            <p>Nome: ${row["Nome do sitio"]}</p>
-            <p>Morada: ${row["Morada"]}</p>
+            <p>${row["Nome do sitio"]}</p>
+            <p>${row["Morada"]}</p>
             <p>Horário: ${row["horario"]}</p>
             </div>`;
             let position = {lat: 0, lng: 0};
 
-            [position.lat, position.lng] = row["Link google ou coordenadas"].split(',').map(s => parseFloat(s));
+            [position.lat, position.lng] = row["coordenadas"].split(',').map(s => parseFloat(s));
 
             let infowindow = new google.maps.InfoWindow({
               content: contentString,
@@ -52,6 +63,7 @@
 
             let marker = new google.maps.Marker({
               position: position,
+              icon: icons[tipoicon].icon,
               map,
               title: row["zeeee"]
             });
